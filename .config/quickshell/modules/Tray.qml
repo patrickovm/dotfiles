@@ -10,7 +10,10 @@ Pill {
     hPad: 8
     spacing: 6
 
+    visible: trayRepeater.count > 0
+
     Repeater {
+        id: trayRepeater
         model: SystemTray.items
 
         delegate: Image {

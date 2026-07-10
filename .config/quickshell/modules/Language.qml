@@ -7,28 +7,51 @@ Pill {
     id: root
 
     property Theme theme: Theme {}
-    property string layout: "??"
 
-    readonly property string shortLayout:
-        layout.length >= 2 ? layout.substring(0, 2).toUpperCase() : layout.toUpperCase()
+    property string description: ""
+    property string shortCode: "??"
+    property string variant: ""
+    property string keyboardName: "-------akko-keyboard"
+
+    readonly property string displayText:
+        variant.length > 0
+            ? (shortCode + " " + variant).toUpperCase()
+            : shortCode.toUpperCase()
 
     color: theme.language
     hPad: 8
 
     Text {
-        text: root.shortLayout
+        text: root.displayText
         color: theme.textDark
         font.family: theme.fontFamily
         font.pixelSize: theme.fontSize
         font.bold: true
     }
 
+    function setDescription(desc) {
+        root.description = desc
+        const match = desc.match(/\(([^)]*)\)/)
+        if (match) {
+            const clauses = match[1].split(",").map(s => s.trim()).filter(s => s.length > 0)
+            root.shortCode = clauses.length > 0 ? clauses[0] : desc.substring(0, 2)
+            root.variant = clauses.slice(1).join(", ")
+        } else {
+            root.shortCode = desc.substring(0, 2)
+            root.variant = ""
+        }
+    }
+
+
     Connections {
         target: Hyprland
         function onRawEvent(event) {
             if (event.name === "activelayout") {
-                const parts = event.data.split(",")
-                root.layout = parts[parts.length - 1]
+                const idx = event.data.indexOf(",")
+                const devName = idx >= 0 ? event.data.substring(0, idx) : ""
+                const desc = idx >= 0 ? event.data.substring(idx + 1) : event.data
+                if (devName.trim() !== root.keyboardName) return  // ignore other devices
+                root.setDescription(desc.trim())
             }
         }
     }
@@ -40,11 +63,11 @@ Pill {
     Process {
         id: pollProc
         command: ["sh", "-c",
-            "hyprctl devices -j | grep -o '\"active_keymap\": *\"[^\"]*\"' | head -1 | sed -E 's/.*\"([^\"]+)\"$/\\1/'"]
+            "hyprctl devices -j | jq -r '.keyboards[] | select(.name==\"" + root.keyboardName + "\") | .active_keymap'"]
         stdout: SplitParser {
             onRead: data => {
                 const val = data.trim()
-                if (val !== "") root.layout = val
+                if (val !== "") root.setDescription(val)
             }
         }
     }
