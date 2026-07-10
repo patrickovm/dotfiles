@@ -8,7 +8,7 @@
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function()
-	hl.exec_cmd("waybar &")
+	hl.exec_cmd("quickshell &")
 	hl.exec_cmd("./scripts/xdg.sh")
 	hl.exec_cmd("waypaper --restore")
 	hl.exec_cmd("./scripts/xdg.sh")

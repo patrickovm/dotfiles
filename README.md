@@ -5,7 +5,7 @@ My personal Arch linux configs.
 ## Instalation
 
 ```sh
-git clone --recursive https://github.com/patrickovm/dotfiles.git ~/.dotfiles
+git clone --recursive https://github.com/patrickovm/dotfiles.git ~/dotfiles
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ git clone --recursive https://github.com/patrickovm/dotfiles.git ~/.dotfiles
 Using GNU Stow
 
 ```sh
-stow . 
+stow .
 ```
 
 Cleaning up symbolic links
