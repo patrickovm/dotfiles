@@ -30,6 +30,7 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit")) -- dwindle only
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("wofi-power-menu --disable hibernate"))
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen("maximized", "toggle"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
