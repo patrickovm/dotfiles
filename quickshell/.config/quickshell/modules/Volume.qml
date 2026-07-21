@@ -39,7 +39,7 @@ Pill {
             if (!root.sink || !root.sink.audio) return
             const step = 0.05
             const delta = wheel.angleDelta.y > 0 ? step : -step
-            root.sink.audio.volume = Math.max(0, Math.min(1.5, root.sink.audio.volume + delta))
+            root.sink.audio.volume = Math.max(0, Math.min(1.0, root.sink.audio.volume + delta))
         }
     }
 

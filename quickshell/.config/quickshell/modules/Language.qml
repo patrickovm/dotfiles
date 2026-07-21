@@ -14,13 +14,14 @@ Pill {
     property string keyboardName: "-------akko-keyboard"
 
     readonly property string displayText:
-        variant.length > 0
-            ? (shortCode + " " + variant).toUpperCase()
-            : shortCode.toUpperCase()
-
+        shortCode === "??"
+            ? ""
+            : (variant.length > 0
+                ? (shortCode + " " + variant).toUpperCase()
+                : shortCode.toUpperCase())
     color: theme.language
     hPad: 8
-
+    visible: root.shortCode !== "??"
     Text {
         text: root.displayText
         color: theme.textDark
@@ -41,7 +42,6 @@ Pill {
             root.variant = ""
         }
     }
-
 
     Connections {
         target: Hyprland
